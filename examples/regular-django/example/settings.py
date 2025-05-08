@@ -210,7 +210,7 @@ INSTALLED_APPS = (
     "allauth.socialaccount.providers.vimeo_oauth2",
     "allauth.socialaccount.providers.weibo",
     "allauth.socialaccount.providers.xing",
-    "allauth.usersessions",
+
     "example.users",
 )
 

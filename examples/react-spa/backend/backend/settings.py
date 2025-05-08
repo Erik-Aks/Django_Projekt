@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.dummy",
     "allauth.mfa",
     "allauth.headless",
-    "allauth.usersessions",
     "drf_spectacular",
     "backend.drf_demo",
     "backend.ninja_demo",

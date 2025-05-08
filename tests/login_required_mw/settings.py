@@ -73,7 +73,7 @@ INSTALLED_APPS = (
     "allauth",
     "allauth.account",
     "allauth.mfa",
-    "allauth.usersessions",
+
     "allauth.headless",
 ) + INSTALLED_SOCIALACCOUNT_APPS
 
