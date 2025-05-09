@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path
 
-from allauth.account.decorators import secure_admin_login
-
+from allauth.account.admin import secure_admin_login  # Исправленный импорт
 
 admin.autodiscover()
 admin.site.login = secure_admin_login(admin.site.login)
@@ -10,4 +9,5 @@ admin.site.login = secure_admin_login(admin.site.login)
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
+    path("_allauth/", include("allauth.headless.urls")),  # Убедитесь, что headless добавлен
 ]

@@ -1,141 +1,160 @@
 from typing import Tuple
+from pathlib import Path
+from django.contrib.auth.hashers import PBKDF2PasswordHasher
 
+# Basic Django Settings
+SECRET_KEY = "psst"
+SITE_ID = 1
+ALLOWED_HOSTS = ["testserver", "example.com"]
+USE_I18N = False
+USE_TZ = True
+ROOT_URLCONF = "tests.regular.urls"
+LOGIN_URL = "/accounts/login/"
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Database
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
+    }
+}
+
+# Templates
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [Path(__file__).parent / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
+# Cache
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+    }
+}
+
+# Middleware
+MIDDLEWARE = [
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
+]
+
+# Social Account Providers
 INSTALLED_SOCIALACCOUNT_APPS: Tuple[str, ...] = (
     "allauth.socialaccount",
-    "allauth.socialaccount.providers.agave",
-    "allauth.socialaccount.providers.amazon",
-    "allauth.socialaccount.providers.amazon_cognito",
-    "allauth.socialaccount.providers.angellist",
-    "allauth.socialaccount.providers.apple",
-    "allauth.socialaccount.providers.asana",
-    "allauth.socialaccount.providers.atlassian",
-    "allauth.socialaccount.providers.auth0",
-    "allauth.socialaccount.providers.authentiq",
-    "allauth.socialaccount.providers.baidu",
-    "allauth.socialaccount.providers.basecamp",
-    "allauth.socialaccount.providers.battlenet",
-    "allauth.socialaccount.providers.bitbucket_oauth2",
-    "allauth.socialaccount.providers.bitly",
-    "allauth.socialaccount.providers.box",
-    "allauth.socialaccount.providers.cilogon",
-    "allauth.socialaccount.providers.clever",
-    "allauth.socialaccount.providers.coinbase",
-    "allauth.socialaccount.providers.dataporten",
-    "allauth.socialaccount.providers.daum",
-    "allauth.socialaccount.providers.digitalocean",
-    "allauth.socialaccount.providers.dingtalk",
-    "allauth.socialaccount.providers.discord",
-    "allauth.socialaccount.providers.disqus",
-    "allauth.socialaccount.providers.douban",
-    "allauth.socialaccount.providers.doximity",
-    "allauth.socialaccount.providers.draugiem",
-    "allauth.socialaccount.providers.drip",
-    "allauth.socialaccount.providers.dropbox",
-    "allauth.socialaccount.providers.dummy",
-    "allauth.socialaccount.providers.dwolla",
-    "allauth.socialaccount.providers.edmodo",
-    "allauth.socialaccount.providers.edx",
-    "allauth.socialaccount.providers.eventbrite",
-    "allauth.socialaccount.providers.eveonline",
-    "allauth.socialaccount.providers.evernote",
-    "allauth.socialaccount.providers.exist",
-    "allauth.socialaccount.providers.facebook",
-    "allauth.socialaccount.providers.feedly",
-    "allauth.socialaccount.providers.feishu",
-    "allauth.socialaccount.providers.figma",
-    "allauth.socialaccount.providers.fivehundredpx",
-    "allauth.socialaccount.providers.flickr",
-    "allauth.socialaccount.providers.foursquare",
-    "allauth.socialaccount.providers.frontier",
-    "allauth.socialaccount.providers.fxa",
-    "allauth.socialaccount.providers.gitea",
-    "allauth.socialaccount.providers.github",
-    "allauth.socialaccount.providers.gitlab",
-    "allauth.socialaccount.providers.globus",
     "allauth.socialaccount.providers.google",
-    "allauth.socialaccount.providers.gumroad",
-    "allauth.socialaccount.providers.hubic",
-    "allauth.socialaccount.providers.hubspot",
-    "allauth.socialaccount.providers.instagram",
-    "allauth.socialaccount.providers.jupyterhub",
-    "allauth.socialaccount.providers.kakao",
-    "allauth.socialaccount.providers.lemonldap",
-    "allauth.socialaccount.providers.lichess",
-    "allauth.socialaccount.providers.line",
+    "allauth.socialaccount.providers.facebook",
+    "allauth.socialaccount.providers.github",
     "allauth.socialaccount.providers.linkedin_oauth2",
-    "allauth.socialaccount.providers.mailchimp",
-    "allauth.socialaccount.providers.mailcow",
-    "allauth.socialaccount.providers.mailru",
-    "allauth.socialaccount.providers.mediawiki",
-    "allauth.socialaccount.providers.meetup",
     "allauth.socialaccount.providers.microsoft",
-    "allauth.socialaccount.providers.miro",
-    "allauth.socialaccount.providers.naver",
-    "allauth.socialaccount.providers.netiq",
-    "allauth.socialaccount.providers.nextcloud",
-    "allauth.socialaccount.providers.notion",
-    "allauth.socialaccount.providers.odnoklassniki",
-    "allauth.socialaccount.providers.okta",
-    "allauth.socialaccount.providers.openid",
-    "allauth.socialaccount.providers.openid_connect",
-    "allauth.socialaccount.providers.openstreetmap",
-    "allauth.socialaccount.providers.orcid",
-    "allauth.socialaccount.providers.patreon",
-    "allauth.socialaccount.providers.paypal",
-    "allauth.socialaccount.providers.pinterest",
-    "allauth.socialaccount.providers.pocket",
-    "allauth.socialaccount.providers.questrade",
-    "allauth.socialaccount.providers.quickbooks",
-    "allauth.socialaccount.providers.reddit",
-    "allauth.socialaccount.providers.robinhood",
-    "allauth.socialaccount.providers.salesforce",
-    "allauth.socialaccount.providers.sharefile",
-    "allauth.socialaccount.providers.shopify",
-    "allauth.socialaccount.providers.slack",
-    "allauth.socialaccount.providers.snapchat",
-    "allauth.socialaccount.providers.soundcloud",
-    "allauth.socialaccount.providers.spotify",
-    "allauth.socialaccount.providers.stackexchange",
-    "allauth.socialaccount.providers.steam",
-    "allauth.socialaccount.providers.stocktwits",
-    "allauth.socialaccount.providers.strava",
-    "allauth.socialaccount.providers.stripe",
-    "allauth.socialaccount.providers.telegram",
-    "allauth.socialaccount.providers.tiktok",
-    "allauth.socialaccount.providers.trainingpeaks",
-    "allauth.socialaccount.providers.trello",
-    "allauth.socialaccount.providers.tumblr",
-    "allauth.socialaccount.providers.tumblr_oauth2",
-    "allauth.socialaccount.providers.twentythreeandme",
-    "allauth.socialaccount.providers.twitch",
-    "allauth.socialaccount.providers.twitter",
+    "allauth.socialaccount.providers.apple",
     "allauth.socialaccount.providers.twitter_oauth2",
-    "allauth.socialaccount.providers.untappd",
-    "allauth.socialaccount.providers.vimeo",
-    "allauth.socialaccount.providers.vimeo_oauth2",
-    "allauth.socialaccount.providers.vk",
-    "allauth.socialaccount.providers.wahoo",
-    "allauth.socialaccount.providers.weibo",
-    "allauth.socialaccount.providers.weixin",
-    "allauth.socialaccount.providers.windowslive",
-    "allauth.socialaccount.providers.xing",
-    "allauth.socialaccount.providers.yahoo",
-    "allauth.socialaccount.providers.yandex",
-    "allauth.socialaccount.providers.ynab",
-    "allauth.socialaccount.providers.zoho",
-    "allauth.socialaccount.providers.zoom",
 )
 
-# Instaling the necessary dependencies for testing SAML slows the CI pipeline
-# down considerably, as we need to:
-#
-#     pip install --no-binary xmlsec --no-binary lxml {opts} {packages}
-#
-# Also see: https://github.com/xmlsec/python-xmlsec/issues/320#issuecomment-2129076807
+# Try to add SAML if available
 try:
     import onelogin  # noqa
 
     INSTALLED_SOCIALACCOUNT_APPS += ("allauth.socialaccount.providers.saml",)
 except ImportError:
     pass
+
+# Installed Apps
+INSTALLED_APPS = [
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.sites",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.admin",
+    "django.contrib.humanize",
+    "allauth",
+    "allauth.account",
+    "allauth.mfa",
+    *INSTALLED_SOCIALACCOUNT_APPS,
+]
+
+# Authentication
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+
+# Password Hashers (testing purpose only — not for production)
+class MyPBKDF2PasswordHasher(PBKDF2PasswordHasher):
+    iterations = 1
+
+
+PASSWORD_HASHERS = [
+    "tests.regular.settings.MyPBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+]
+
+# Allauth Settings
+ACCOUNT_SIGNUP_FIELDS = ['email']  # Указывается только email для регистрации
+ACCOUNT_LOGIN_METHODS = 'email'  # Логин строго через email
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Обязательная проверка email
+
+# Если логин по username также требуется, используйте:
+# ACCOUNT_SIGNUP_FIELDS = ['username', 'email']
+# ACCOUNT_LOGIN_METHODS = 'username_email'
+
+# Социальные сети
+SOCIALACCOUNT_QUERY_EMAIL = True  # Обязательное получение email для социальных аккаунтов
+SOCIALACCOUNT_PROVIDERS = {
+    "openid_connect": {
+        "APPS": [
+            {
+                "provider_id": "unittest-server",
+                "name": "Unittest Server",
+                "client_id": "Unittest client_id",
+                "client_secret": "Unittest client_secret",
+                "settings": {
+                    "server_url": "https://unittest.example.com",
+                },
+            },
+            {
+                "provider_id": "other-server",
+                "name": "Other Example Server",
+                "client_id": "other client_id",
+                "client_secret": "other client_secret",
+                "settings": {
+                    "server_url": "https://other.example.com",
+                },
+            },
+        ],
+    }
+}
+
+# MFA Settings
+MFA_SUPPORTED_TYPES = ["totp", "webauthn", "recovery_codes"]
+MFA_PASSKEY_LOGIN_ENABLED = True
+MFA_PASSKEY_SIGNUP_ENABLED = False  # Избежание конфликта с верификацией email
+
+# Headless Mode
+HEADLESS_SERVE_SPECIFICATION = True
+
+# Static Files
+STATIC_ROOT = "/tmp/"
+STATIC_URL = "/static/"

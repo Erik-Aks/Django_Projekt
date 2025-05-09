@@ -4,7 +4,6 @@ from django.contrib.auth.hashers import PBKDF2PasswordHasher
 
 from tests.common.settings import INSTALLED_SOCIALACCOUNT_APPS
 
-
 SECRET_KEY = "psst"
 SITE_ID = 1
 ALLOWED_HOSTS = (
@@ -67,19 +66,19 @@ MIDDLEWARE = (
 )
 
 INSTALLED_APPS = (
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.sites",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "django.contrib.admin",
-    "django.contrib.humanize",
-    "allauth",
-    "allauth.account",
-    "allauth.mfa",
-    "allauth.headless",
-) + INSTALLED_SOCIALACCOUNT_APPS
+                     "django.contrib.auth",
+                     "django.contrib.contenttypes",
+                     "django.contrib.sessions",
+                     "django.contrib.sites",
+                     "django.contrib.messages",
+                     "django.contrib.staticfiles",
+                     "django.contrib.admin",
+                     "django.contrib.humanize",
+                     "allauth",
+                     "allauth.account",
+                     "allauth.mfa",
+                     "allauth.headless",
+                 ) + INSTALLED_SOCIALACCOUNT_APPS
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
@@ -107,7 +106,6 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
-
 
 SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
@@ -147,7 +145,6 @@ HEADLESS_FRONTEND_URLS = {
     "socialaccount_login_error": "/spa/error",
 }
 HEADLESS_SERVE_SPECIFICATION = True
-
 
 MFA_SUPPORTED_TYPES = ["totp", "webauthn", "recovery_codes"]
 MFA_PASSKEY_LOGIN_ENABLED = True

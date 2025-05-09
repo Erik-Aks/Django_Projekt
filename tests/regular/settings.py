@@ -1,33 +1,26 @@
+from typing import Tuple
 from pathlib import Path
-
 from django.contrib.auth.hashers import PBKDF2PasswordHasher
 
-from tests.common.settings import INSTALLED_SOCIALACCOUNT_APPS
-
-
+# Basic Django Settings
 SECRET_KEY = "psst"
 SITE_ID = 1
-ALLOWED_HOSTS = (
-    "testserver",
-    "example.com",
-)
+ALLOWED_HOSTS = ["testserver", "example.com"]
 USE_I18N = False
 USE_TZ = True
+ROOT_URLCONF = "tests.regular.urls"
+LOGIN_URL = "/accounts/login/"
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Database
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": ":memory:",
-        "USER": "",
-        "PASSWORD": "",
-        "HOST": "",
-        "PORT": "",
     }
 }
 
-ROOT_URLCONF = "tests.regular.urls"
-LOGIN_URL = "/accounts/login/"
-
+# Templates
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -44,13 +37,15 @@ TEMPLATES = [
     },
 ]
 
+# Cache
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.dummy.DummyCache",
     }
 }
 
-MIDDLEWARE = (
+# Middleware
+MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -58,9 +53,30 @@ MIDDLEWARE = (
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+]
+
+# Social Account Providers
+INSTALLED_SOCIALACCOUNT_APPS: Tuple[str, ...] = (
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.facebook",
+    "allauth.socialaccount.providers.github",
+    "allauth.socialaccount.providers.linkedin_oauth2",
+    "allauth.socialaccount.providers.microsoft",
+    "allauth.socialaccount.providers.apple",
+    "allauth.socialaccount.providers.twitter_oauth2",
 )
 
-INSTALLED_APPS = (
+# Try to add SAML if available
+try:
+    import onelogin  # noqa
+
+    INSTALLED_SOCIALACCOUNT_APPS += ("allauth.socialaccount.providers.saml",)
+except ImportError:
+    pass
+
+# Installed Apps
+INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -72,24 +88,18 @@ INSTALLED_APPS = (
     "allauth",
     "allauth.account",
     "allauth.mfa",
-) + INSTALLED_SOCIALACCOUNT_APPS
+    *INSTALLED_SOCIALACCOUNT_APPS,
+]
 
-AUTHENTICATION_BACKENDS = (
+# Authentication
+AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
-)
-
-STATIC_ROOT = "/tmp/"  # Dummy
-STATIC_URL = "/static/"
+]
 
 
+# Password Hashers (testing purpose only — not for production)
 class MyPBKDF2PasswordHasher(PBKDF2PasswordHasher):
-    """
-    A subclass of PBKDF2PasswordHasher that uses 1 iteration.
-
-    This is for test purposes only. Never use anywhere else.
-    """
-
     iterations = 1
 
 
@@ -101,10 +111,17 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
 
+# Allauth Settings
+ACCOUNT_SIGNUP_FIELDS = ['email']  # Указывается только email для регистрации
+ACCOUNT_LOGIN_METHODS = 'email'  # Логин строго через email
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Обязательная проверка email
 
-ACCOUNT_ADAPTER = "tests.common.adapters.AccountAdapter"
+# Если логин по username также требуется, используйте:
+# ACCOUNT_SIGNUP_FIELDS = ['username', 'email']
+# ACCOUNT_LOGIN_METHODS = 'username_email'
 
-SOCIALACCOUNT_QUERY_EMAIL = True
+# Социальные сети
+SOCIALACCOUNT_QUERY_EMAIL = True  # Обязательное получение email для социальных аккаунтов
 SOCIALACCOUNT_PROVIDERS = {
     "openid_connect": {
         "APPS": [
@@ -130,10 +147,14 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-ACCOUNT_LOGIN_BY_CODE_ENABLED = True
-
+# MFA Settings
 MFA_SUPPORTED_TYPES = ["totp", "webauthn", "recovery_codes"]
 MFA_PASSKEY_LOGIN_ENABLED = True
-MFA_PASSKEY_SIGNUP_ENABLED = True
+MFA_PASSKEY_SIGNUP_ENABLED = False  # Избежание конфликта с верификацией email
 
+# Headless Mode
 HEADLESS_SERVE_SPECIFICATION = True
+
+# Static Files
+STATIC_ROOT = "/tmp/"
+STATIC_URL = "/static/"

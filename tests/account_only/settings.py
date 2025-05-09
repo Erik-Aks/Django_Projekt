@@ -2,7 +2,6 @@ from pathlib import Path
 
 from django.contrib.auth.hashers import PBKDF2PasswordHasher
 
-
 SECRET_KEY = "psst"
 SITE_ID = 1
 ALLOWED_HOSTS = (
@@ -98,6 +97,9 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
 
-
+# Allauth Settings
+ACCOUNT_LOGIN_METHOD = 'email'  # Logowanie wyłącznie przez email
+ACCOUNT_SIGNUP_FIELDS = ['email']  # Wymaga tylko emaila przy rejestracji
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Weryfikacja email podczas rejestracji
 ACCOUNT_LOGIN_BY_CODE_ENABLED = True
 ACCOUNT_ADAPTER = "tests.common.adapters.AccountAdapter"
